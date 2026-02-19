@@ -32,4 +32,4 @@ The simplest way to do it is to add 3 bits for the 3 first moves. The strategy w
 
 #### What we are going to do (Just a first draft)
 
-- Select the initial 3 moves randomly. What this means is that the index of the move index array will be random.
+- The first three values in the array will work independantly of the other player. Then the move list will follow after
