@@ -1,4 +1,6 @@
-def getHistoryStringFromHistoryNumber(num, config):
+from config import config
+
+def getHistoryStringFromHistoryNumber(num):
   format_value = f'0{str(config["independent_rounds"] * 2)}b'
   binary = format(num - config["independent_rounds"], format_value)
   result = ""

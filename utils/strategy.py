@@ -1,6 +1,7 @@
 import random
+from config import config
 
-def generateRandomStrategy(config):
+def generateRandomStrategy():
   strategy = []
 
   for x in range(config["independent_rounds"]):

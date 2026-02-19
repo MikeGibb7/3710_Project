@@ -2,16 +2,8 @@ from utils.strategy import generateRandomStrategy
 from utils.output import printStrategy
 from utils.score import calculateScoreTournament
 
-config = {
-  "independent_rounds": 3,
-  "cooperate_success": 3, 
-  "cooperate_failure": 0, 
-  "defect_success": 5, 
-  "defect_failure": 1,
-}
-
-first_bot = generateRandomStrategy(config)
-second_bot = generateRandomStrategy(config)
+first_bot = generateRandomStrategy()
+second_bot = generateRandomStrategy()
 
 training_set = [
   first_bot,
@@ -19,9 +11,9 @@ training_set = [
 ]
 
 print("Robot1: ")
-printStrategy(first_bot, config)
+printStrategy(first_bot)
 print("Robot2: ")
-printStrategy(second_bot, config)
+printStrategy(second_bot)
 
-calculateScoreTournament(first_bot, training_set, config)
+calculateScoreTournament(first_bot, training_set)
  
