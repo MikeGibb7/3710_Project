@@ -8,7 +8,7 @@ def calculateScore(strategy_a, strategy_b):
   history_b = "";
 
   # First few rounds independant of other player
-  for x in range(config["independent_rounds"]):
+  for x in range(config["rounds_in_memory"]):
     move_a = strategy_a[x]
     move_b = strategy_b[x]
 
@@ -19,16 +19,15 @@ def calculateScore(strategy_a, strategy_b):
     score_a += move_score_a
     score_b += move_score_b
 
-  # print("First 3 rounds: ")
-  # print(f"FirstBot: {score_a}, SecondBot: {score_b}")
-  # print(f"HistoryA = \"{history_a}\", HistoryB = \"{history_b}\"")
+  print("First 3 rounds: ")
+  print(f"FirstBot: {score_a}, SecondBot: {score_b}")
 
   # Rounds that rely on previous move context
-  for x in range(config["total_rounds"] - config["independent_rounds"]):
-    # print(f"Round {1 + x + config['independent_rounds']}: history_a = \"{history_a}\", history_b = \"{history_b}\"")
+  for x in range(config["total_rounds"] - config["rounds_in_memory"]):
+    print(f"Round {1 + x + config['rounds_in_memory']}: history_a = \"{history_a}\", history_b = \"{history_b}\"")
 
-    strategy_a_index = getHistoryNumberFromHistoryString(history_a) + config["independent_rounds"]
-    strategy_b_index = getHistoryNumberFromHistoryString(history_b) + config["independent_rounds"]
+    strategy_a_index = getHistoryNumberFromHistoryString(history_a) + config["rounds_in_memory"]
+    strategy_b_index = getHistoryNumberFromHistoryString(history_b) + config["rounds_in_memory"]
 
     move_a = strategy_a[strategy_a_index]
     move_b = strategy_b[strategy_b_index]
@@ -40,9 +39,9 @@ def calculateScore(strategy_a, strategy_b):
     score_a += move_score_a
     score_b += move_score_b
 
-  # print(f"Final Score: ")
-  # print(f"FirstBot: {score_a}, SecondBot: {score_b}")
-  # print()
+  print(f"Final Score: ")
+  print(f"FirstBot: {score_a}, SecondBot: {score_b}")
+  print()
 
   return score_a, score_b
     
