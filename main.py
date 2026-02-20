@@ -1,19 +1,18 @@
-from utils.strategy import generateRandomStrategy
-from utils.output import printStrategy
+from utils.strategy import Strategy, generateRandomStrategy
 from utils.score import calculateScoreTournament
 
-first_bot = generateRandomStrategy()
-second_bot = generateRandomStrategy()
+first_bot = generateRandomStrategy(3)
+second_bot = generateRandomStrategy(2)
 
 training_set = [
-  first_bot,
+  # first_bot,
   second_bot,
 ]
 
 print("Robot1: ")
-printStrategy(first_bot)
+first_bot.printStrategy()
 print("Robot2: ")
-printStrategy(second_bot)
+second_bot.printStrategy()
 
 score = calculateScoreTournament(first_bot, training_set)
 
