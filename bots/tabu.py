@@ -10,6 +10,7 @@ from utils.strategy import Strategy, generateRandomStrategy
 from utils.score import calculateScoreTournament
 from config import config
 from utils.save_strat import save_strategy
+from training_set import getHumanTrainingSet
 
 def get_neighbors(strategy, num_neighbors=10):
     """
@@ -55,22 +56,21 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
         neighbors = get_neighbors(current_bot, num_neighbors=num_neighbors)
         
         best_neighbor = None
-        best_neighbor_score = -float('inf')
+        best_neighbor_score = float('inf')
         
         # Evaluate all neighbors
         for neighbor in neighbors:
             neighbor_id = strategy_to_string(neighbor)
             
             score = calculateScoreTournament(neighbor, training_set)
-            
             is_tabu = neighbor_id in tabu_list
             
             # Aspiration Criterion: Ignore Tabu status if we found a new global best
-            if is_tabu and score > best_score:
+            if is_tabu and score < best_score:
                 is_tabu = False
                 
             # Select the best neighbor that is strictly non-Tabu (or satisfied Aspiration)
-            if not is_tabu and score > best_neighbor_score:
+            if not is_tabu and score < best_neighbor_score:
                 best_neighbor = neighbor
                 best_neighbor_score = score
         
@@ -84,7 +84,7 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
         current_score = best_neighbor_score
         
         # 4. Update Global Best
-        if current_score > best_score:
+        if current_score < best_score:
             best_bot = current_bot
             best_score = current_score
             print(f"[{iteration}] New Best Score: {best_score}")
@@ -102,9 +102,10 @@ if __name__ == "__main__":
     MEMORY_DEPTH = 2
     
     print(f"--- Setting up Training Environment (Memory Depth: {MEMORY_DEPTH}) ---")
-    training_set = []
-    for _ in range(20):
-        training_set.append(generateRandomStrategy(random.choice([1, 2, 3])))
+    training_set = getHumanTrainingSet()
+
+    # for _ in range(20):
+    #    training_set.append(generateRandomStrategy(random.choice([1, 2, 3])))
 
     # Run the Search
     best_strategy, score = train_bot_tabu(
