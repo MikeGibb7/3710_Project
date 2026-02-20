@@ -1,8 +1,8 @@
 from config import config
 
-def getHistoryStringFromHistoryNumber(num):
-  format_value = f'0{str(config["rounds_in_memory"] * 2)}b'
-  binary = format(num - config["rounds_in_memory"], format_value)
+def getHistoryStringFromHistoryNumber(num, rounds_in_memory):
+  format_value = f'0{str(rounds_in_memory * 2)}b'
+  binary = format(num - rounds_in_memory, format_value)
   result = ""
 
   for bit in binary:
