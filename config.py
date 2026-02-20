@@ -1,5 +1,5 @@
 config = {
-  "total_rounds": 25,
+  "total_rounds": 10,
   "cooperate_success": 3, 
   "cooperate_failure": 0, 
   "defect_success": 5, 

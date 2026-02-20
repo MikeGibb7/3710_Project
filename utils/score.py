@@ -8,7 +8,7 @@ def calculateScore(strategy_a, strategy_b):
   history_b = "";
 
   for x in range(config["total_rounds"]):
-    # print(f"Round {x}: ")
+    # print(f"Round {x + 1}: ")
     # print(f"History of Robot1: {history_a}, History of Robot2: {history_b}")
     
     move_a = strategy_a.getMove(history_a)
@@ -46,3 +46,27 @@ def calculateScoreTournament(strategy, training_set):
     score += scoreA
 
   return score
+
+def humanVsRobot(strategy):
+  score_human, score_robot = 0, 0
+  history = ""
+
+  for x in range(config["total_rounds"]):
+    print(f"Round {x + 1}: ")
+    print(f"History of Robot: {history}")
+
+    move_human = input("Enter your move (C or D): ")
+    move_robot = strategy.getMove(history)
+
+    history += move_robot + move_human
+    history = history[-(strategy.rounds_in_memory * 2):]
+
+    move_score_human, move_score_robot = calculateMove(move_human, move_robot)
+    score_human += move_score_human
+    score_robot += move_score_robot
+
+    print(f"Human: {move_human}, Robot: {move_robot}")
+    print(f"Score of Human: {score_human}, Score of Robot2: {score_robot}")
+    print()
+
+  return score_human, score_robot
