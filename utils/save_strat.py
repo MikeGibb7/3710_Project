@@ -8,15 +8,15 @@ def save_strategy(strategy, filename):
         "move_list": strategy.move_list
     }
     
-    os.makedirs("saved_bots", exist_ok=True)
-    filepath = os.path.join("saved_bots", filename)
+    os.makedirs("saved_strategies", exist_ok=True)
+    filepath = os.path.join("saved_strategies", filename)
     
     with open(filepath, 'w') as json_file:
         json.dump(data_to_save, json_file, indent=4)
 
 def load_strategy(filename):
 
-    filepath = os.path.join("saved_bots", filename)
+    filepath = os.path.join("saved_strategies", filename)
     
     if not os.path.exists(filepath):
         print(f"Error: Could not find {filepath}")
