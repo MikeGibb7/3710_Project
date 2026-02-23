@@ -5,7 +5,8 @@ from utils.strategy import Strategy
 def save_strategy(strategy, filename):
     data_to_save = {
         "rounds_in_memory": strategy.rounds_in_memory,
-        "move_list": strategy.move_list
+        "move_list": strategy.move_list,
+        "name":strategy.name
     }
     
     os.makedirs("saved_strategies", exist_ok=True)
@@ -27,5 +28,6 @@ def load_strategy(filename):
         
     return Strategy(
         strategy=loaded_data["move_list"], 
-        rounds_in_memory=loaded_data["rounds_in_memory"]
+        rounds_in_memory=loaded_data["rounds_in_memory"],
+        name=loaded_data["name"]
     )

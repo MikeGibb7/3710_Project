@@ -3,9 +3,10 @@ from config import config
 from utils.convert import getHistoryNumberFromHistoryString, getHistoryStringFromHistoryNumber
 
 class Strategy:
-  def __init__(self, strategy, rounds_in_memory):
+  def __init__(self, strategy, rounds_in_memory, name=""):
     self.move_list = strategy
     self.rounds_in_memory = rounds_in_memory
+    self.name = name
 
   def getMove(self, history):
     # This logic will activate the first few moves that are independant of the other player
@@ -35,4 +36,4 @@ def generateRandomStrategy(rounds_in_memory):
   for x in range(2**(rounds_in_memory * 2)):
     move_list.append(random.choice(['C', 'D']))
 
-  return Strategy(move_list, rounds_in_memory)
+  return Strategy(move_list, rounds_in_memory, "random")
