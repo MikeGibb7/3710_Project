@@ -8,4 +8,5 @@ def getHumanTrainingSet():
     competitors.append(load_strategy("TFTT_strategy.json"))
     competitors.append(load_strategy("AllC_strategy.json"))
     competitors.append(load_strategy("AllD_strategy.json"))
+    # competitors.append(generateRandomStrategy(3))
     return competitors
