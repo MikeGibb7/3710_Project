@@ -56,7 +56,7 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
         neighbors = get_neighbors(current_bot, num_neighbors=num_neighbors)
         
         best_neighbor = None
-        best_neighbor_score = float('inf')
+        best_neighbor_score = -float('inf')
         
         # Evaluate all neighbors
         for neighbor in neighbors:
@@ -66,11 +66,11 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
             is_tabu = neighbor_id in tabu_list
             
             # Aspiration Criterion: Ignore Tabu status if we found a new global best
-            if is_tabu and score < best_score:
+            if is_tabu and score > best_score:
                 is_tabu = False
                 
             # Select the best neighbor that is strictly non-Tabu (or satisfied Aspiration)
-            if not is_tabu and score < best_neighbor_score:
+            if not is_tabu and score > best_neighbor_score:
                 best_neighbor = neighbor
                 best_neighbor_score = score
         
@@ -84,7 +84,7 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
         current_score = best_neighbor_score
         
         # 4. Update Global Best
-        if current_score < best_score:
+        if current_score > best_score:
             best_bot = current_bot
             best_score = current_score
             print(f"[{iteration}] New Best Score: {best_score}")
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     best_strategy, score = train_bot_tabu(
         training_set=training_set,
         memory_depth=MEMORY_DEPTH,
-        max_iterations=10000, # How long to train
+        max_iterations=1000, # How long to train
         tabu_tenure=10      # How many recent moves to forbid
     )
     

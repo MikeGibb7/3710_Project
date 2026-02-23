@@ -45,7 +45,9 @@ def calculateScoreTournament(strategy, training_set):
   for competitor in training_set:
     scoreA, _ = calculateScore(strategy, competitor)
     total_score += scoreA
-    individual_scores.append((competitor.name,scoreA))
+    #Average out Scores
+    Score = scoreA / config["total_rounds"]
+    individual_scores.append((competitor.name,Score))
 
   return total_score, individual_scores
 
