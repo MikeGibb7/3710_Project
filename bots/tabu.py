@@ -29,7 +29,7 @@ def get_neighbors(strategy, num_neighbors=10):
         
         new_moves[flip_index] = 'C' if new_moves[flip_index] == 'D' else 'D'
         
-        neighbors.append(Strategy(new_moves, rounds_in_memory))
+        neighbors.append(Strategy(new_moves, rounds_in_memory, "tabu"))
         
     return neighbors
 
@@ -46,7 +46,7 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
     current_bot = generateRandomStrategy(memory_depth)
     best_bot = current_bot
     
-    current_score = calculateScoreTournament(current_bot, training_set)
+    current_score, _ = calculateScoreTournament(current_bot, training_set)
     best_score = current_score
     
     tabu_list = [] # Stores string IDs of visited strategies
@@ -62,7 +62,7 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
         for neighbor in neighbors:
             neighbor_id = strategy_to_string(neighbor)
             
-            score = calculateScoreTournament(neighbor, training_set)
+            score, _ = calculateScoreTournament(neighbor, training_set)
             is_tabu = neighbor_id in tabu_list
             
             # Aspiration Criterion: Ignore Tabu status if we found a new global best
@@ -99,7 +99,7 @@ def train_bot_tabu(training_set, memory_depth, max_iterations=200, tabu_tenure=1
 # --- EXECUTION ---
 
 if __name__ == "__main__":
-    MEMORY_DEPTH = 2
+    MEMORY_DEPTH = 3
     
     print(f"--- Setting up Training Environment (Memory Depth: {MEMORY_DEPTH}) ---")
     training_set = getHumanTrainingSet()
@@ -111,12 +111,16 @@ if __name__ == "__main__":
     best_strategy, score = train_bot_tabu(
         training_set=training_set,
         memory_depth=MEMORY_DEPTH,
-        max_iterations=100, # How long to train
+        max_iterations=10000, # How long to train
         tabu_tenure=10      # How many recent moves to forbid
     )
     
     print("\n--- Training Complete ---")
     print(f"Final High Score: {score}")
+    _, individual_scores = calculateScoreTournament(best_strategy, training_set=training_set)
+    print("---Individual Scores---")
+    for score in individual_scores:
+        print(f"name: " + str(score[0]) + " --- score: " + str(score[1]))
     
     # Save the winning strategy!
     save_strategy(best_strategy, filename="tabu_champion.json")

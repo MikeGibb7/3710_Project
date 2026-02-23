@@ -4,8 +4,8 @@ from config import config
 def calculateScore(strategy_a, strategy_b): 
   score_a = 0
   score_b = 0
-  history_a = "";
-  history_b = "";
+  history_a = ""
+  history_b = ""
 
   for x in range(config["total_rounds"]):
     # print(f"Round {x + 1}: ")
@@ -40,12 +40,14 @@ def calculateMove(move_a, move_b):
     return config["defect_failure"], config["defect_failure"]
   
 def calculateScoreTournament(strategy, training_set):
-  score = 0
+  total_score = 0
+  individual_scores = []
   for competitor in training_set:
     scoreA, _ = calculateScore(strategy, competitor)
-    score += scoreA
+    total_score += scoreA
+    individual_scores.append((competitor.name,scoreA))
 
-  return score
+  return total_score, individual_scores
 
 def humanVsRobot(strategy):
   score_human, score_robot = 0, 0
