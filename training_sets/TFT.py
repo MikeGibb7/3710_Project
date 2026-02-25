@@ -8,7 +8,11 @@ sys.path.append(parent_dir)
 
 from utils.strategy import Strategy
 from utils.convert import *
-from utils.save_strat import save_strategy
+from utils.save_strat import *
+from utils.score import *
+from training_set import getHumanTrainingSet
+
+# Deprecated createTFT
 
 def createTFT(rounds_in_memory,Suspicious=False):
     move_list = []
@@ -33,5 +37,17 @@ def createTFT(rounds_in_memory,Suspicious=False):
     else:
         save_strategy(strategy=strategy, filename="TFT_strategy.json")
 
-createTFT(1, True)
-        
+def runTFT():
+    TFT_Strategy = load_strategy("TFT_strategy.json")
+    training_set = getHumanTrainingSet()
+    total_score, indivdualScore = calculateScoreTournament(strategy=TFT_Strategy, training_set=training_set)
+    return total_score, indivdualScore
+
+if __name__ == "__main__":
+    total_score, individual_scores = runTFT()
+    print("\n--- Training Complete ---")
+    print(f"Final High Score: {total_score}")
+    print("---Individual Scores---")
+    for score in individual_scores:
+        print(f"name: " + str(score[0]) + " --- score: " + str(score[1]))
+    
