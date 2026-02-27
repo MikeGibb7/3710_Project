@@ -51,7 +51,7 @@ def tournamentOf50RandomStrategiesExample():
   array_of_strategies[winner].printStrategy()
 
 def runEdaStrategy():
-  memory_depth = 3 
+  memory_depth = 2
   print(f"--- Setting up Training Environment (Memory Depth: {memory_depth}) ---")
   training_set = getHumanTrainingSet()
 
@@ -59,12 +59,13 @@ def runEdaStrategy():
   best_strategy, score = train_bot_eda(
     training_set=training_set,
     memory_depth=memory_depth,
-    population_size=50,
-    generations=100
+    population_size=10,
+    generations=10
   )
     
   print("\n--- Training Complete ---")
   print(f"Final High Score: {score}")
+  print("Best Strategy: ", best_strategy.move_list)
     
   # Save the winning strategy!
   save_strategy(best_strategy, filename="eda_champion.json")

@@ -3,24 +3,30 @@ import random
 from training_set import getHumanTrainingSet
 from utils.save_strat import save_strategy
 from utils.score import calculateScoreTournament
-from utils.strategy import Strategy, generateRandomStrategy
+from utils.strategy import Strategy, generateRandomStrategy, printAllStrategies
 
 
-def train_bot_eda(training_set, memory_depth, population_size=50, generations=100):
+def train_bot_eda(training_set, memory_depth, population_size, generations):
   # Initialize a population of random strategies
   population = [generateRandomStrategy(memory_depth) for _ in range(population_size)]
+  # print("Initial population:")
+  # print(len(population))
+  # printAllStrategies(population)
 
   for _ in range(generations):
         
     # Extract the best strategies from the current population
-    bots_ranked = []
+    population_with_scores = []
     for bot in population:
-      score = calculateScoreTournament(bot, training_set)
-      bots_ranked.append((bot, score))
+      score, _ = calculateScoreTournament(bot, training_set)
+      population_with_scores.append((bot, score))
     
-    bots_ranked_indices = sorted(bots_ranked, key=lambda x: x[1], reverse=True) 
-    selected_bots_indices = bots_ranked_indices[:population_size // 2]
-    selected_bots = [bot for bot, _ in selected_bots_indices]
+    population_with_scores_ranked = sorted(population_with_scores, key=lambda x: x[1], reverse=True) 
+    population_with_scores_trimmed = population_with_scores_ranked[:population_size // 2]
+    best_of_population = [bot for bot, _ in population_with_scores_trimmed]
+
+    # print("Best of population:")
+    # printAllStrategies(best_of_population)
         
     # Create an array of the odds of choosing 'C' for each move in the strategy
     odds_for_choice_c = []
@@ -28,7 +34,7 @@ def train_bot_eda(training_set, memory_depth, population_size=50, generations=10
       count_c = 0
       count_d = 0
 
-      for bot in selected_bots:
+      for bot in best_of_population:
         if bot.move_list[i] == 'C':
           count_c += 1
         else:
@@ -36,6 +42,9 @@ def train_bot_eda(training_set, memory_depth, population_size=50, generations=10
 
       total = count_c + count_d
       odds_for_choice_c.append(count_c / total)
+
+    # print("Odds of each choice:")
+    # print(odds_for_choice_c)
                                
     # Generate a new population based on the odds of choosing 'C' for each move
     new_population = []
@@ -50,15 +59,16 @@ def train_bot_eda(training_set, memory_depth, population_size=50, generations=10
 
     population = new_population
 
+    # print("New population:")
+    # printAllStrategies(population)
+
   # Get the best strategy from the final population
-  bots_ranked = []
+  population_with_scores = []
   for bot in population:
-    score = calculateScoreTournament(bot, training_set)
-    bots_ranked.append((bot, score))
-    
-  bots_ranked_indices = sorted(bots_ranked, key=lambda x: x[1], reverse=True) 
-  selected_bots = [bot for bot, _ in bots_ranked_indices]
+    score, _ = calculateScoreTournament(bot, training_set)
+    population_with_scores.append((bot, score))
+  population_with_scores_ranked = sorted(population_with_scores, key=lambda x: x[1], reverse=True) 
         
-  return bots_ranked_indices[0]
+  return population_with_scores_ranked[0]
 
    
