@@ -37,3 +37,7 @@ def generateRandomStrategy(rounds_in_memory):
     move_list.append(random.choice(['C', 'D']))
 
   return Strategy(move_list, rounds_in_memory, "random")
+
+def printAllStrategies(strategies):
+  for strategy in strategies:
+    print(strategy.move_list)
