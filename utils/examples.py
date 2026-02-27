@@ -1,3 +1,6 @@
+from bots.eda import train_bot_eda
+from training_set import getHumanTrainingSet
+from utils.save_strat import save_strategy
 from utils.strategy import Strategy, generateRandomStrategy
 from utils.score import calculateScoreTournament, humanVsRobot
 import random
@@ -46,3 +49,22 @@ def tournamentOf50RandomStrategiesExample():
 
   print("Winning strategy: " + str(winner) + " with score " + str(max))
   array_of_strategies[winner].printStrategy()
+
+def runEdaStrategy():
+  memory_depth = 3 
+  print(f"--- Setting up Training Environment (Memory Depth: {memory_depth}) ---")
+  training_set = getHumanTrainingSet()
+
+  # Run the Search
+  best_strategy, score = train_bot_eda(
+    training_set=training_set,
+    memory_depth=memory_depth,
+    population_size=50,
+    generations=100
+  )
+    
+  print("\n--- Training Complete ---")
+  print(f"Final High Score: {score}")
+    
+  # Save the winning strategy!
+  save_strategy(best_strategy, filename="eda_champion.json")
